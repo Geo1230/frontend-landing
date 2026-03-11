@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aether AI — Intelligence Infrastructure</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           ROOT: Liquid Glass Preset Tokens
+           ========================================= */
+        :root {
+            /* Base */
+            --bg-primary: #050510;
+            --text-primary: #f0f0f5;
+            --text-secondary: rgba(240, 240, 245, 0.55);
+
+            /* Gradient mesh nodes */
+            --mesh-1: rgba(120, 119, 198, 0.45);
+            --mesh-2: rgba(168, 130, 247, 0.30);
+            --mesh-3: rgba(80, 160, 240, 0.25);
+            --mesh-4: rgba(200, 180, 255, 0.15);
+
+            /* Accent */
+            --accent: #c4b5fd;
+            --accent-glow: rgba(196, 181, 253, 0.25);
+
+            /* Glass tokens */
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.10);
+            --glass-highlight: rgba(255, 255, 255, 0.20);
+            --glass-blur: 20px;
+            --glass-saturation: 180%;
+            --glass-radius: clamp(16px, 2.5vw, 28px);
+
+            /* Fonts */
+            --font-display: 'Outfit', system-ui, sans-serif;
+            --font-body: 'Inter Tight', system-ui, sans-serif;
+
+            /* Typography scale */
+            --h1-size: clamp(2.5rem, 7vw, 5.5rem);
+            --h2-size: clamp(1.5rem, 4vw, 3rem);
+            --h3-size: clamp(1.125rem, 2.5vw, 1.5rem);
+            --body-size: clamp(0.875rem, 1.5vw, 1.125rem);
+            --small-size: clamp(0.75rem, 1vw, 0.875rem);
+
+            /* Spacing */
+            --section-padding: clamp(2rem, 6vw, 6rem) clamp(1rem, 4vw, 4rem);
+            --content-gap: clamp(1rem, 3vw, 3rem);
+            --card-gap: clamp(0.75rem, 2vw, 1.5rem);
+            --element-gap: clamp(0.5rem, 1vw, 1rem);
+            --max-width: min(90vw, 1200px);
+
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration: 0.6s;
+        }
+
+        /* =========================================
+           BASE: Reset & Layout
+           ========================================= */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y proximity;
+            height: 100%;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-size: var(--body-size);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            height: 100%;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
+        }
+
+        /* Gradient mesh background */
+        body {
+            background:
+                radial-gradient(ellipse at 25% 40%, var(--mesh-1) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 25%, var(--mesh-2) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, var(--mesh-3) 0%, transparent 40%),
+                radial-gradient(ellipse at 90% 60%, var(--mesh-4) 0%, transparent 45%),
+                var(--bg-primary);
+            background-attachment: fixed;
+        }
+
+        /* Animated mesh overlay */
+        .mesh-animated {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 50%, rgba(140, 100, 255, 0.18) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(100, 180, 255, 0.12) 0%, transparent 50%);
+            background-size: 200% 200%;
+            animation: meshDrift 20s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes meshDrift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        /* Grain texture */
+        .grain {
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.4;
+        }
+
+        /* =========================================
+           SECTIONS
+           ========================================= */
+        section {
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: var(--section-padding);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            height: 100vh;
+            height: 100dvh;
+            min-height: unset;
+            scroll-snap-align: start;
+            gap: clamp(1.5rem, 3vw, 2.5rem);
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: var(--h1-size);
+            font-weight: 700;
+            line-height: 1.05;
+            text-align: center;
+            letter-spacing: -0.03em;
+            max-width: 14ch;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: var(--h2-size);
+            font-weight: 600;
+            line-height: 1.15;
+            text-align: center;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--content-gap);
+        }
+
+        h3 {
+            font-family: var(--font-display);
+            font-size: var(--h3-size);
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        p {
+            color: var(--text-secondary);
+            max-width: 52ch;
+            text-align: center;
+        }
+
+        /* =========================================
+           LIQUID GLASS: 5-Layer System
+           ========================================= */
+
+        /* Layer 2: Glass core */
+        .glass {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--glass-radius);
+            filter: url(#liquid-glass);
+            isolation: isolate;
+            box-shadow:
+                0 0 0 0.5px rgba(255, 255, 255, 0.12) inset,
+                0 1px 3px rgba(255, 255, 255, 0.15) inset,
+                0 8px 32px rgba(0, 0, 0, 0.25),
+                0 2px 8px rgba(0, 0, 0, 0.12);
+            transition: box-shadow 0.4s var(--ease-out-expo),
+                        transform 0.4s var(--ease-out-expo);
+        }
+
+        .glass__backdrop {
+            position: absolute;
+            inset: 0;
+            backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+            background: var(--glass-bg);
+            z-index: 0;
+        }
+
+        .glass__content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Layer 3: Edge highlight */
+        .glass::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.0) 0%,
+                rgba(255, 255, 255, 0.12) 33%,
+                rgba(255, 255, 255, 0.35) 66%,
+                rgba(255, 255, 255, 0.0) 100%
+            );
+            pointer-events: none;
+            z-index: 2;
+            mix-blend-mode: overlay;
+            opacity: 0.6;
+        }
+
+        /* Layer 4: Border (screen blend) */
+        .glass::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1.5px;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.0) 0%,
+                rgba(255, 255, 255, 0.15) 33%,
+                rgba(255, 255, 255, 0.45) 66%,
+                rgba(255, 255, 255, 0.0) 100%
+            );
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 3;
+            mix-blend-mode: screen;
+            opacity: 0.25;
+        }
+
+        /* Layer 4b: Border overlay for iridescence */
+        .glass-border-overlay {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1.5px;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.0) 0%,
+                rgba(255, 255, 255, 0.3) 33%,
+                rgba(255, 255, 255, 0.6) 66%,
+                rgba(255, 255, 255, 0.0) 100%
+            );
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 4;
+            mix-blend-mode: overlay;
+            transition: background 0.3s ease;
+        }
+
+        /* Layer 5: Hover */
+        .glass:hover {
+            box-shadow:
+                0 0 0 0.5px rgba(255, 255, 255, 0.18) inset,
+                0 1px 3px rgba(255, 255, 255, 0.2) inset,
+                0 12px 40px rgba(0, 0, 0, 0.3),
+                0 2px 8px rgba(0, 0, 0, 0.15),
+                -2px 0 12px rgba(255, 100, 150, 0.06),
+                2px 0 12px rgba(100, 150, 255, 0.06);
+        }
+
+        /* Glass light variant (smaller elements) */
+        .glass-light {
+            filter: url(#liquid-glass-light);
+        }
+
+        /* =========================================
+           NAV: Floating glass pill
+           ========================================= */
+        .nav {
+            position: fixed;
+            top: clamp(12px, 2vw, 24px);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            border-radius: 999px;
+            padding: 0;
+            width: auto;
+            max-width: min(92vw, 680px);
+        }
+
+        .nav .glass__content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: clamp(1rem, 3vw, 2.5rem);
+            padding: clamp(8px, 1.2vw, 14px) clamp(16px, 2.5vw, 28px);
+        }
+
+        .nav__logo {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(0.9rem, 1.8vw, 1.15rem);
+            white-space: nowrap;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav__links {
+            display: flex;
+            gap: clamp(0.75rem, 2vw, 1.5rem);
+            list-style: none;
+        }
+
+        .nav__links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: var(--small-size);
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav__links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav__cta {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-primary) !important;
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-weight: 600 !important;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: background 0.2s ease;
+        }
+
+        .nav__cta:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* =========================================
+           HERO
+           ========================================= */
+        .hero__subtitle {
+            font-family: var(--font-body);
+            font-size: var(--small-size);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+        }
+
+        .hero__card {
+            padding: clamp(20px, 3vw, 36px) clamp(28px, 4vw, 48px);
+            margin-top: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        .hero__card .glass__content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--element-gap);
+        }
+
+        .hero__card p {
+            font-size: var(--body-size);
+            max-width: 44ch;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: clamp(10px, 1.5vw, 14px) clamp(20px, 3vw, 32px);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 999px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: var(--body-size);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px) saturate(200%);
+            -webkit-backdrop-filter: blur(8px) saturate(200%);
+            transition: all 0.3s var(--ease-out-expo);
+            cursor: pointer;
+        }
+
+        .cta-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(196, 181, 253, 0.2);
+        }
+
+        .cta-btn svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s var(--ease-out-expo);
+        }
+
+        .cta-btn:hover svg {
+            transform: translateX(3px);
+        }
+
+        /* =========================================
+           GRID
+           ========================================= */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+            gap: var(--card-gap);
+            width: 100%;
+            max-width: var(--max-width);
+        }
+
+        /* =========================================
+           FEATURE CARDS
+           ========================================= */
+        .feature-card {
+            padding: clamp(20px, 3vw, 32px);
+        }
+
+        .feature-card .glass__content {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(8px, 1.5vw, 14px);
+        }
+
+        .feature-icon {
+            width: clamp(36px, 4vw, 48px);
+            height: clamp(36px, 4vw, 48px);
+            border-radius: 12px;
+            background: rgba(196, 181, 253, 0.12);
+            border: 1px solid rgba(196, 181, 253, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+        }
+
+        .feature-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .feature-card p {
+            text-align: left;
+            font-size: var(--small-size);
+        }
+
+        .feature-card h3 {
+            color: var(--text-primary);
+        }
+
+        /* =========================================
+           STATS
+           ========================================= */
+        .stats-row {
+            display: flex;
+            gap: clamp(2rem, 5vw, 5rem);
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: var(--content-gap);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat__number {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .stat__label {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* =========================================
+           CTA SECTION
+           ========================================= */
+        .cta-section .glass {
+            padding: clamp(2rem, 5vw, 4rem) clamp(2rem, 6vw, 5rem);
+            max-width: min(90vw, 720px);
+            width: 100%;
+        }
+
+        .cta-section .glass__content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--content-gap);
+        }
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: clamp(2rem, 4vw, 4rem) clamp(1rem, 4vw, 4rem);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: var(--small-size);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        footer a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer__inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer__links {
+            display: flex;
+            gap: clamp(1rem, 2vw, 2rem);
+            list-style: none;
+        }
+
+        /* =========================================
+           SCROLL ANIMATIONS
+           ========================================= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--duration) var(--ease-out-expo),
+                        transform var(--duration) var(--ease-out-expo);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.92);
+            transition: opacity var(--duration) var(--ease-out-expo),
+                        transform var(--duration) var(--ease-out-expo);
+        }
+
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .reveal:nth-child(1) { transition-delay: 0.05s; }
+        .reveal:nth-child(2) { transition-delay: 0.1s; }
+        .reveal:nth-child(3) { transition-delay: 0.15s; }
+        .reveal:nth-child(4) { transition-delay: 0.2s; }
+        .reveal:nth-child(5) { transition-delay: 0.25s; }
+        .reveal:nth-child(6) { transition-delay: 0.3s; }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 768px) {
+            :root {
+                --h1-size: clamp(2rem, 10vw, 3.5rem);
+                --section-padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 3vw, 2rem);
+            }
+            .grid { grid-template-columns: 1fr !important; }
+            .nav__links { display: none; }
+            .stats-row { gap: clamp(1.5rem, 4vw, 2.5rem); }
+            .footer__inner { justify-content: center; text-align: center; }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --section-padding: clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem);
+                --h1-size: clamp(1.5rem, 5vw, 2.5rem);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animated mesh background -->
+    <div class="mesh-animated"></div>
+
+    <!-- Grain texture overlay -->
+    <div class="grain"></div>
+
+    <!-- SVG Displacement Filters -->
+    <svg style="position:absolute;width:0;height:0" aria-hidden="true">
+      <defs>
+        <filter id="liquid-glass" x="-35%" y="-35%" width="170%" height="170%" color-interpolation-filters="sRGB">
+          <feImage x="0" y="0" width="100%" height="100%" result="DISP_MAP"
+            href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%23808080'/%3E%3Cstop offset='50%25' stop-color='%23808080'/%3E%3Cstop offset='85%25' stop-color='%23606060'/%3E%3Cstop offset='95%25' stop-color='%23404040'/%3E%3Cstop offset='100%25' stop-color='%23808080'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='200' height='200' fill='url(%23g)'/%3E%3C/svg%3E"
+            preserveAspectRatio="none"/>
+          <feDisplacementMap in="SourceGraphic" in2="DISP_MAP" scale="28" xChannelSelector="R" yChannelSelector="G" result="RED_DISP"/>
+          <feColorMatrix in="RED_DISP" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="RED_CH"/>
+          <feDisplacementMap in="SourceGraphic" in2="DISP_MAP" scale="24" xChannelSelector="R" yChannelSelector="G" result="GREEN_DISP"/>
+          <feColorMatrix in="GREEN_DISP" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="GREEN_CH"/>
+          <feDisplacementMap in="SourceGraphic" in2="DISP_MAP" scale="20" xChannelSelector="R" yChannelSelector="G" result="BLUE_DISP"/>
+          <feColorMatrix in="BLUE_DISP" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="BLUE_CH"/>
+          <feBlend in="GREEN_CH" in2="BLUE_CH" mode="screen" result="GB"/>
+          <feBlend in="RED_CH" in2="GB" mode="screen" result="RGB"/>
+          <feGaussianBlur in="RGB" stdDeviation="0.4" result="RGB_SOFT"/>
+          <feImage x="0" y="0" width="100%" height="100%" result="EDGE_MASK"
+            href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cdefs%3E%3CradialGradient id='m' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='black' stop-opacity='0'/%3E%3Cstop offset='60%25' stop-color='black' stop-opacity='0'/%3E%3Cstop offset='100%25' stop-color='white' stop-opacity='1'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='200' height='200' fill='url(%23m)'/%3E%3C/svg%3E"
+            preserveAspectRatio="none"/>
+          <feComposite in="RGB_SOFT" in2="EDGE_MASK" operator="in" result="EDGE_ABERRATION"/>
+          <feComponentTransfer in="EDGE_MASK" result="INV_MASK">
+            <feFuncA type="table" tableValues="1 0"/>
+          </feComponentTransfer>
+          <feComposite in="SourceGraphic" in2="INV_MASK" operator="in" result="CENTER_CLEAN"/>
+          <feComposite in="EDGE_ABERRATION" in2="CENTER_CLEAN" operator="over"/>
+        </filter>
+
+        <filter id="liquid-glass-light" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+          <feImage x="0" y="0" width="100%" height="100%" result="DISP_MAP"
+            href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%23808080'/%3E%3Cstop offset='60%25' stop-color='%23808080'/%3E%3Cstop offset='90%25' stop-color='%23606060'/%3E%3Cstop offset='100%25' stop-color='%23808080'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='200' height='200' fill='url(%23g)'/%3E%3C/svg%3E"
+            preserveAspectRatio="none"/>
+          <feDisplacementMap in="SourceGraphic" in2="DISP_MAP" scale="16" xChannelSelector="R" yChannelSelector="G" result="DISPLACED"/>
+          <feGaussianBlur in="DISPLACED" stdDeviation="0.3"/>
+        </filter>
+      </defs>
+    </svg>
+
+    <!-- ========== NAV ========== -->
+    <nav class="nav glass glass-light" data-interactive>
+        <span class="glass__backdrop" style="background: rgba(255,255,255,0.03); backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);"></span>
+        <div class="glass-border-overlay"></div>
+        <div class="glass__content">
+            <a href="#" class="nav__logo">Aether</a>
+            <ul class="nav__links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#stats">Proof</a></li>
+                <li><a href="#cta">Pricing</a></li>
+            </ul>
+            <a href="#cta" class="nav__cta">Get Access</a>
+        </div>
+    </nav>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero">
+        <span class="hero__subtitle reveal">Intelligence Infrastructure</span>
+        <h1 class="reveal" style="transition-delay: 0.08s">Build Systems That Think</h1>
+        <div class="hero__card glass reveal-scale" data-interactive style="transition-delay: 0.2s">
+            <span class="glass__backdrop"></span>
+            <div class="glass-border-overlay"></div>
+            <div class="glass__content">
+                <p>Deploy production AI pipelines in minutes. From retrieval to reasoning, Aether handles the infrastructure so you can focus on the intelligence.</p>
+                <a href="#cta" class="cta-btn">
+                    Start Building
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FEATURES ========== -->
+    <section id="features">
+        <h2 class="reveal">Built for the AI-Native Stack</h2>
+        <div class="grid">
+            <div class="feature-card glass reveal" data-interactive>
+                <span class="glass__backdrop"></span>
+                <div class="glass-border-overlay"></div>
+                <div class="glass__content">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h3>Vector Pipeline</h3>
+                    <p>Ingest, chunk, embed, and index at scale. Automatic schema detection and adaptive chunking strategies.</p>
+                </div>
+            </div>
+            <div class="feature-card glass reveal" data-interactive>
+                <span class="glass__backdrop"></span>
+                <div class="glass-border-overlay"></div>
+                <div class="glass__content">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    </div>
+                    <h3>Reasoning Engine</h3>
+                    <p>Chain-of-thought orchestration with built-in verification. Models reason, then validate their own outputs.</p>
+                </div>
+            </div>
+            <div class="feature-card glass reveal" data-interactive>
+                <span class="glass__backdrop"></span>
+                <div class="glass-border-overlay"></div>
+                <div class="glass__content">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                    </div>
+                    <h3>Deployment Mesh</h3>
+                    <p>One-click deploy to any cloud. Auto-scaling, observability, and cost optimization built in from day one.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== STATS ========== -->
+    <section id="stats">
+        <h2 class="reveal">Proven at Scale</h2>
+        <p class="reveal">Trusted by engineering teams building the next generation of intelligent systems.</p>
+        <div class="stats-row">
+            <div class="stat reveal">
+                <div class="stat__number" data-target="2400">0</div>
+                <div class="stat__label">Teams deployed</div>
+            </div>
+            <div class="stat reveal">
+                <div class="stat__number" data-target="99" data-suffix=".9%">0</div>
+                <div class="stat__label">Uptime SLA</div>
+            </div>
+            <div class="stat reveal">
+                <div class="stat__number" data-target="47" data-suffix="ms">0</div>
+                <div class="stat__label">Avg. latency (p95)</div>
+            </div>
+            <div class="stat reveal">
+                <div class="stat__number" data-target="12" data-suffix="B+">0</div>
+                <div class="stat__label">Embeddings processed</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA ========== -->
+    <section id="cta" class="cta-section">
+        <div class="glass reveal-scale" data-interactive>
+            <span class="glass__backdrop" style="backdrop-filter: blur(28px) saturate(200%); -webkit-backdrop-filter: blur(28px) saturate(200%);"></span>
+            <div class="glass-border-overlay"></div>
+            <div class="glass__content">
+                <h2 style="margin-bottom: 0">Start Building Today</h2>
+                <p>Free tier includes 10M embeddings and 1K reasoning calls per month. No credit card required.</p>
+                <a href="#" class="cta-btn">
+                    Create Free Account
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer>
+        <div class="footer__inner">
+            <span>Aether AI Inc.</span>
+            <ul class="footer__links">
+                <li><a href="#">Documentation</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Status</a></li>
+                <li><a href="#">Privacy</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        /* =========================================
+           Intersection Observer — Scroll Reveals
+           ========================================= */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal, .reveal-scale').forEach(el => observer.observe(el));
+
+        /* =========================================
+           Counter Animation
+           ========================================= */
+        function animateCounter(el) {
+            const target = parseInt(el.dataset.target);
+            const suffix = el.dataset.suffix || '';
+            const duration = 1500;
+            const start = performance.now();
+            function update(now) {
+                const progress = Math.min((now - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.floor(target * eased).toLocaleString() + suffix;
+                if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat__number[data-target]').forEach(el => counterObserver.observe(el));
+
+        /* =========================================
+           Liquid Glass Interactive — Mouse Light
+           ========================================= */
+        class LiquidGlassInteractive {
+            constructor(element) {
+                this.el = element;
+                this.borderEl = element.querySelector('.glass-border-overlay');
+                if (!this.borderEl) return;
+                this.bindEvents();
+            }
+
+            bindEvents() {
+                this.el.addEventListener('mousemove', (e) => {
+                    const rect = this.el.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 100;
+                    const angle = 135 + x * 1.2;
+
+                    this.borderEl.style.background = `linear-gradient(
+                        ${angle}deg,
+                        rgba(255,255,255,0.0) 0%,
+                        rgba(255,255,255,${0.12 + Math.abs(x) * 0.008}) ${Math.max(10, 33 + y * 0.3)}%,
+                        rgba(255,255,255,${0.4 + Math.abs(x) * 0.012}) ${Math.min(90, 66 + y * 0.4)}%,
+                        rgba(255,255,255,0.0) 100%
+                    )`;
+                });
+
+                this.el.addEventListener('mouseleave', () => {
+                    this.borderEl.style.background = '';
+                });
+            }
+        }
+
+        document.querySelectorAll('.glass[data-interactive]').forEach(el => {
+            new LiquidGlassInteractive(el);
+        });
+
+        /* =========================================
+           Browser Compatibility
+           ========================================= */
+        (function() {
+            const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+            if (isFirefox) {
+                document.querySelectorAll('.glass').forEach(el => {
+                    el.style.filter = 'none';
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
