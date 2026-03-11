@@ -6,6 +6,33 @@ Create stunning, zero-dependency landing pages as a single self-contained HTML f
 
 It is designed for people who want beautiful output fast, without setting up a framework, build step, or component library.
 
+## Installation
+
+### For Claude Code / Windsurf Users
+
+Copy the skill files into your local skills directory:
+
+```bash
+mkdir -p ~/.claude/skills/frontend-landing
+cp SKILL.md ~/.claude/skills/frontend-landing/
+cp STYLE_PRESETS.md ~/.claude/skills/frontend-landing/
+```
+
+If you also want to keep the repository docs and demo file locally, copy:
+
+```bash
+cp README.md ~/.claude/skills/frontend-landing/
+cp test-liquid-glass.html ~/.claude/skills/frontend-landing/
+```
+
+Then invoke the skill from Claude Code / Cascade when you want to generate a landing page.
+
+### Manual Download
+
+1. Download `SKILL.md` and `STYLE_PRESETS.md` from this repository
+2. Place them in `~/.claude/skills/frontend-landing/`
+3. Restart your tool if needed
+
 ## What it does
 
 - Generates a complete landing page in **one HTML file**
@@ -48,16 +75,19 @@ It is especially useful when you want **high visual quality** but still want the
 - **Premium Liquid Glass**
   The flagship style uses a layered glass material system with real SVG displacement refraction, chromatic edge aberration, backdrop blur, gradient borders, and mouse-responsive highlights.
 
+## Requirements
+
+- [Claude Code](https://claude.ai/claude-code) or a compatible skill-enabled environment
+- No frontend framework, build tool, or package installation is required for the generated output
+
 ## Included files
 
-- `SKILL.md`
-  Main skill definition, workflow, landing page architecture, Liquid Glass implementation, animation patterns, and base CSS system.
-
-- `STYLE_PRESETS.md`
-  Visual reference for all 10 presets, including typography, palettes, layout patterns, and direction for when each style should be used.
-
-- `test-liquid-glass.html`
-  A local reference/demo page for testing the Liquid Glass material treatment.
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | Main skill definition, workflow, landing page architecture, Liquid Glass implementation, animation patterns, and base CSS system |
+| `STYLE_PRESETS.md` | Reference file for all 10 presets, including typography, palettes, layout patterns, and usage guidance |
+| `test-liquid-glass.html` | Local reference/demo page for testing the Liquid Glass material treatment |
+| `README.md` | Repository overview, installation instructions, and open-source documentation |
 
 ## Style presets
 
@@ -187,17 +217,25 @@ This is especially valuable for rapid prototyping, marketing experiments, and de
 
 If you want a polished marketing page without spinning up a full frontend stack, this skill is built for that.
 
+## Credits
+
+Created by [@Geo1230](https://github.com/Geo1230) with Cascade.
+
+Inspired by the idea that premium marketing pages should be easier to make, easier to share, and not locked behind heavy frontend stacks.
+
 ## License
 
-Add your preferred license here before publishing if needed.
+MIT — Use it, modify it, and share it.
 
 ## Author notes
 
 If you publish this on GitHub, it helps to include:
 
+ 
 - a few screenshots or GIFs
 - 2 to 4 example prompts
 - one or two generated sample pages
 - a short before/after or preset comparison section
 
+ 
 That will make the repo much easier to understand at a glance.
