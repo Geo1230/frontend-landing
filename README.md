@@ -6,6 +6,19 @@ Create stunning, zero-dependency landing pages as a single self-contained HTML f
 
 It is designed for people who want beautiful output fast, without setting up a framework, build step, or component library.
 
+## What This Does
+
+**Frontend Landing** helps non-designers create polished marketing pages without needing to know CSS frameworks or modern frontend tooling. It follows a "show, don't tell" workflow: instead of forcing users to describe aesthetics precisely, it can guide them through visual directions and style presets, then generate a complete landing page as a standalone HTML file.
+
+### Key Features
+
+- **Zero Dependencies** — Single HTML files with inline CSS/JS. No npm, no build tools, no frameworks.
+- **Visual Style Discovery** — Helps users choose design direction through concrete visual options instead of vague aesthetic language.
+- **10 Distinct Presets** — Includes genuinely different visual systems, not just color swaps.
+- **Liquid Glass Signature** — Premium SVG-based refraction, chromatic aberration, blur, border layers, and interactive lighting.
+- **Responsive by Default** — Layout, spacing, and type scale cleanly from phone to desktop.
+- **Anti-AI-Slop** — Pushes toward stronger hero composition, typography, pacing, and art direction.
+
 ## Installation
 
 ### For Claude Code / Windsurf Users
@@ -33,32 +46,95 @@ Then invoke the skill from Claude Code / Cascade when you want to generate a lan
 2. Place them in `~/.claude/skills/frontend-landing/`
 3. Restart your tool if needed
 
-## What it does
+## Usage
 
-- Generates a complete landing page in **one HTML file**
-- Uses **inline CSS and JavaScript** only
-- Requires **zero dependencies**
-- Produces pages that are **responsive by default**
-- Supports **10 distinct style presets**
-- Includes a **real Liquid Glass implementation** with SVG displacement, blur, border layers, and interactive lighting
-- Helps users choose style visually instead of relying on vague aesthetic descriptions
+### Create a New Landing Page
 
-## Who it is for
+```text
+/frontend-landing
 
-Use this skill when you want to create:
+> "Build a premium landing page for an AI note-taking product. Make it feel calm, sharp, and high-end."
+```
 
-- Product landing pages
-- SaaS homepages
-- Personal homepages
-- Portfolio sites
-- Launch pages
-- Coming-soon pages
-- Event pages
-- Agency or studio one-pagers
+The skill can:
+1. Ask about your page type and content readiness
+2. Help choose a style path or preset
+3. Generate preview directions when needed
+4. Build a complete single-file HTML landing page
+5. Let you iterate on visuals, structure, and pacing
 
-It is especially useful when you want **high visual quality** but still want the final result to be easy to open, share, edit, and deploy.
+### Example Prompts
 
-## Key ideas
+```text
+/frontend-landing
+
+> "Create 3 visual directions for a personal portfolio homepage, then let me choose one."
+```
+
+```text
+/frontend-landing
+
+> "Make a single-file HTML launch page for a design studio using the Liquid Glass preset."
+```
+
+```text
+/frontend-landing
+
+> "I need a zero-dependency product page with hero, features, testimonials, pricing, and a strong final CTA."
+```
+
+## Included Styles
+
+- **Liquid Glass** — Premium, Apple-inspired, refractive, depth-driven
+- **SaaS Clean** — Professional, trustworthy, modern B2B clarity
+- **Bold Startup** — High-energy, launch-ready, oversized presence
+- **Neon Tech** — Futuristic, technical, cyber-modern
+- **Warm Organic** — Friendly, natural, human-centered
+- **Editorial Luxe** — Refined, magazine-inspired, aspirational
+- **Brutalist Raw** — Unconventional, graphic, intentionally bold
+- **Pastel Dream** — Soft, playful, polished consumer energy
+- **Dark Cinema** — Dramatic, immersive, cinematic mood
+- **Minimal Ink** — Typography-led, precise, restrained
+
+## Output Example
+
+Each landing page is generated as a single, self-contained HTML file:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <style>
+        /* Fonts, CSS variables, layout system, animations */
+    </style>
+</head>
+<body>
+    <nav>...</nav>
+    <section class="hero">...</section>
+    <section class="features">...</section>
+    <section class="cta">...</section>
+    <footer>...</footer>
+    <script>
+        // Scroll animations, interactions, and optional Liquid Glass behavior
+    </script>
+</body>
+</html>
+```
+
+Typical output includes:
+
+- Hero section with a clear focal point
+- Feature or value sections
+- Optional pricing, FAQ, testimonials, stats, gallery, or newsletter sections
+- Final CTA and footer
+- Scroll reveal animations
+- Responsive spacing with `clamp()`
+- Visual hierarchy tuned for both desktop and mobile
+
+## Philosophy
 
 - **Zero dependency output**
   Every page is a single standalone HTML file. No npm install, no bundler, no framework.
@@ -80,7 +156,7 @@ It is especially useful when you want **high visual quality** but still want the
 - [Claude Code](https://claude.ai/claude-code) or a compatible skill-enabled environment
 - No frontend framework, build tool, or package installation is required for the generated output
 
-## Included files
+## Files
 
 | File | Purpose |
 |------|---------|
@@ -88,44 +164,6 @@ It is especially useful when you want **high visual quality** but still want the
 | `STYLE_PRESETS.md` | Reference file for all 10 presets, including typography, palettes, layout patterns, and usage guidance |
 | `test-liquid-glass.html` | Local reference/demo page for testing the Liquid Glass material treatment |
 | `README.md` | Repository overview, installation instructions, and open-source documentation |
-
-## Style presets
-
-The skill ships with 10 curated presets:
-
-1. `Liquid Glass`
-2. `SaaS Clean`
-3. `Bold Startup`
-4. `Neon Tech`
-5. `Warm Organic`
-6. `Editorial Luxe`
-7. `Brutalist Raw`
-8. `Pastel Dream`
-9. `Dark Cinema`
-10. `Minimal Ink`
-
-These are not just color themes. Each preset defines a different:
-
-- Layout pattern
-- Typography system
-- Color language
-- Section rhythm
-- Hero composition style
-- Component treatment
-- Visual tone
-
-## Output characteristics
-
-A typical generated page includes:
-
-- A strong hero section with a clear focal point
-- Feature or value sections
-- Optional sections like pricing, FAQ, testimonials, stats, gallery, or newsletter
-- A final CTA section
-- Footer navigation
-- Scroll reveal animations
-- Responsive spacing with `clamp()`
-- Visual hierarchy tuned for both desktop and mobile
 
 ## Liquid Glass highlight
 
@@ -161,38 +199,6 @@ Instead, it pushes for:
 - Distinct visual direction per preset
 - Premium brand presentation
 
-## How to use
-
-If you are using this as a Windsurf/Cascade skill, place it in your skills directory and invoke it when you want a landing page or one-page website.
-
-Example prompts:
-
-```text
-Build a premium landing page for an AI note-taking product. Make it feel calm, sharp, and high-end.
-```
-
-```text
-Create 3 visual directions for a personal portfolio homepage, then let me choose one.
-```
-
-```text
-Make a single-file HTML launch page for a design studio using the Liquid Glass preset.
-```
-
-```text
-I need a zero-dependency product page with hero, features, testimonials, pricing, and a strong final CTA.
-```
-
-## Recommended workflow
-
-1. Define the page type and goal
-2. Decide whether content already exists or needs to be generated
-3. Choose a style path:
-   - preview-based selection
-   - direct preset selection
-4. Generate the final single-file HTML page
-5. Open locally and iterate on visuals, copy, and pacing
-
 ## Why single-file HTML
 
 Single-file output makes the result:
@@ -206,6 +212,17 @@ Single-file output makes the result:
 This is especially valuable for rapid prototyping, marketing experiments, and design exploration.
 
 ## Best fit
+
+Use this skill when you want to create:
+
+- Product landing pages
+- SaaS homepages
+- Personal homepages
+- Portfolio sites
+- Launch pages
+- Coming-soon pages
+- Event pages
+- Agency or studio one-pagers
 
 `frontend-landing` is best when you want **beautiful output quickly** and you value:
 
@@ -231,11 +248,9 @@ MIT — Use it, modify it, and share it.
 
 If you publish this on GitHub, it helps to include:
 
- 
 - a few screenshots or GIFs
 - 2 to 4 example prompts
 - one or two generated sample pages
 - a short before/after or preset comparison section
 
- 
 That will make the repo much easier to understand at a glance.
